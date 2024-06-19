@@ -18,6 +18,8 @@ class ScanPage extends StatefulWidget {
 
 class _ScanPageState extends State<ScanPage> {
   File? _selectedImage;
+
+  bool Loading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -105,8 +107,8 @@ class _ScanPageState extends State<ScanPage> {
         ),
         buttonMethod(
             backgroundColor: Colors.red[900],
-            displayText: "Bắt đầu quét",
-            onPressed: _pickimageFromCamera())
+            displayText: "${Loading ? "Chờ xử lý..." : "Bắt đầu quét"}",
+            onPressed: _pickimageFromCamera)
       ]),
     ));
   }
@@ -125,7 +127,17 @@ class _ScanPageState extends State<ScanPage> {
     print("returnImage");
     print(returnImage);
     _selectedImage = File(returnImage!.path);
-    uploadImage(returnImage!.path);
+    uploadImage(returnImage!.path).then((value) {
+      setState(() {
+        Loading = false;
+      });
+    }).catchError((error) {
+      print(error);
+      print("fetch faild");
+      setState(() {
+        Loading = false;
+      });
+    });
   }
 
   Future<void> uploadImage(String path) async {
@@ -142,6 +154,9 @@ class _ScanPageState extends State<ScanPage> {
     // Add file to multipart form data
     request.files.add(await http.MultipartFile.fromPath('image', file.path));
 
+    setState(() {
+      Loading = true;
+    });
     // Send request
     var response = await request.send();
 
@@ -155,10 +170,13 @@ class _ScanPageState extends State<ScanPage> {
     // Check the response
     if (response.statusCode == 200) {
       print('Image uploaded successfully');
-      var jsonStr = await response.stream.bytesToString();
-      print(jsonStr);
-      Map<String, dynamic> json = jsonDecode(jsonStr);
-      DataModel dataModel = DataModel.fromJson(json);
+      Map<String, dynamic> jsonMap = jsonDecode(responseString);
+      List<dynamic> dataList = jsonMap['data'];
+      Map<String, dynamic> dataItem = dataList.first;
+
+      // Create a DataModel instance using the fromJson factory constructor
+      DataModel dataModel = DataModel.fromJson(dataItem);
+
       Navigator.push(
           context,
           MaterialPageRoute(

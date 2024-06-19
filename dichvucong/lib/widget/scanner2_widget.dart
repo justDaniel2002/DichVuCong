@@ -3,6 +3,7 @@ import 'package:dichvucong/methods/text_field_method.dart';
 import 'package:dichvucong/models/data_model.dart';
 import 'package:dichvucong/widget/scanner3_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class ScanPage2 extends StatefulWidget {
   const ScanPage2({super.key, required this.service, required this.dataModel});
@@ -94,17 +95,22 @@ class _ScanPageState2 extends State<ScanPage2> {
                   child: Column(
                     children: keys
                         .map((key) => Container(
-                              margin: const EdgeInsets.only(bottom: 5),
+                              margin: const EdgeInsets.only(bottom: 15),
                               child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(key),
+                                  Container(
+                                      margin: EdgeInsets.only(bottom: 10),
+                                      child: Text(key)),
                                   textFieldMethod(
+                                    readOnly: true,
                                     text: keyPair[key],
-                                    decoration: const InputDecoration(
-                                        labelText: "Tên dịch vụ",
-                                        contentPadding: EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                        border: OutlineInputBorder(
+                                    decoration: InputDecoration(
+                                        labelText: key,
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20),
+                                        border: const OutlineInputBorder(
                                             borderRadius:
                                                 BorderRadius.horizontal(
                                                     left: Radius.circular(100),
@@ -120,12 +126,14 @@ class _ScanPageState2 extends State<ScanPage2> {
                 Container(
                   child: buttonMethod(
                       displayText: "Tiếp tục",
-                      onPressed: Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ScanPage3(
-                                    service: widget.service,
-                                  )))),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ScanPage3(
+                                      service: widget.service,
+                                    )));
+                      }),
                 )
               ],
             ),

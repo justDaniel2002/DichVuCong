@@ -8,16 +8,9 @@ class DataModel {
   String nation;
   String nationProb;
   String address;
-  String addressProb;
-  String placeIssue;
-  String placeIssueProb;
-  String date;
-  String dateProb;
   String doe;
   String doeProb;
-  String code;
-  String codeProb;
-  String type;
+  late String role;
 
   DataModel({
     required this.id,
@@ -29,16 +22,8 @@ class DataModel {
     required this.nation,
     required this.nationProb,
     required this.address,
-    required this.addressProb,
-    required this.placeIssue,
-    required this.placeIssueProb,
-    required this.date,
-    required this.dateProb,
     required this.doe,
     required this.doeProb,
-    required this.code,
-    required this.codeProb,
-    required this.type,
   });
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
@@ -49,19 +34,11 @@ class DataModel {
       nameProb: json['name_prob'],
       dob: json['dob'],
       dobProb: json['dob_prob'],
-      nation: json['nation'],
-      nationProb: json['nation_prob'],
+      nation: json['nationality'],
+      nationProb: json['nationality_prob'],
       address: json['address'],
-      addressProb: json['address_prob'],
-      placeIssue: json['place_issue'],
-      placeIssueProb: json['place_issue_prob'],
-      date: json['date'],
-      dateProb: json['date_prob'],
       doe: json['doe'],
       doeProb: json['doe_prob'],
-      code: json['code'],
-      codeProb: json['code_prob'],
-      type: json['type'],
     );
   }
 
@@ -76,16 +53,8 @@ class DataModel {
       'nation': nation,
       'nation_prob': nationProb,
       'address': address,
-      'address_prob': addressProb,
-      'place_issue': placeIssue,
-      'place_issue_prob': placeIssueProb,
-      'date': date,
-      'date_prob': dateProb,
       'doe': doe,
       'doe_prob': doeProb,
-      'code': code,
-      'code_prob': codeProb,
-      'type': type,
     };
   }
 }
