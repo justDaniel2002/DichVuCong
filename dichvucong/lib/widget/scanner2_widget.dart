@@ -1,4 +1,5 @@
 import 'package:dichvucong/methods/button_method.dart';
+import 'package:dichvucong/methods/navigate_before_method.dart';
 import 'package:dichvucong/methods/text_field_method.dart';
 import 'package:dichvucong/models/data_model.dart';
 import 'package:dichvucong/widget/scanner3_widget.dart';
@@ -44,16 +45,7 @@ class _ScanPageState2 extends State<ScanPage2> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  child: const Icon(
-                    Icons.navigate_before,
-                    size: 30,
-                    color: Colors.black54,
-                  ),
-                ),
+                navigateBeforeMethod(context),
                 Text(
                   widget.service,
                   style: const TextStyle(
@@ -132,6 +124,7 @@ class _ScanPageState2 extends State<ScanPage2> {
                             MaterialPageRoute(
                                 builder: (context) => ScanPage3(
                                       service: widget.service,
+                                      model: widget.dataModel,
                                     )));
                       }),
                 )

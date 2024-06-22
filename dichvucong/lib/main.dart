@@ -1,3 +1,4 @@
+import 'package:dichvucong/widget/pdf_viewer_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'widget/home_widget.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: "App dich vu cong"),
     );
   }
 }

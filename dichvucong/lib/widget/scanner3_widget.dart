@@ -1,11 +1,15 @@
+import 'package:dichvucong/api/pdf_api.dart';
 import 'package:dichvucong/methods/button_method.dart';
 import 'package:dichvucong/methods/text_grey_method.dart';
+import 'package:dichvucong/models/data_model.dart';
+import 'package:dichvucong/widget/pdf_viewer_widget.dart';
 import 'package:flutter/material.dart';
 
 class ScanPage3 extends StatefulWidget {
-  const ScanPage3({super.key, required this.service});
+  const ScanPage3({super.key, required this.service, required this.model});
 
   final String service;
+  final DataModel model;
   @override
   State<ScanPage3> createState() => _ScanPageState3();
 }
@@ -58,7 +62,8 @@ class _ScanPageState3 extends State<ScanPage3> {
                             Container(
                                 margin: const EdgeInsets.only(bottom: 20),
                                 child: Container(
-                                  margin: EdgeInsets.symmetric(vertical: 100),
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 100),
                                   child: const Image(
                                       image: AssetImage(
                                           "assets/successBanner.png")),
@@ -72,7 +77,17 @@ class _ScanPageState3 extends State<ScanPage3> {
                               child: buttonMethod(
                                   backgroundColor: Colors.red[900],
                                   displayText: "Xem trước tài liệu",
-                                  onPressed: () {}),
+                                  onPressed: () async {
+                                    PdfApi pdf = new PdfApi();
+                                    final pdfFile =
+                                        await pdf.generatePDF(widget.model);
+                                    pdf.openFile(pdfFile);
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) =>
+                                    //             const PdfViewerPage()));
+                                  }),
                             ),
                             buttonMethod(
                                 foregroundColor: Colors.red[900],

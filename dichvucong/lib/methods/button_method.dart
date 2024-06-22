@@ -4,9 +4,10 @@ SizedBox buttonMethod(
     {backgroundColor = Colors.blue,
     foregroundColor = Colors.white,
     required displayText,
-    required onPressed}) {
+    required onPressed,
+    double width = double.infinity}) {
   return SizedBox(
-    width: double.infinity,
+    width: width,
     height: 45,
     child: ElevatedButton(
       onPressed: () {
