@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dichvucong/api/file_api.dart';
 import 'package:dichvucong/api/pdf_api.dart';
 import 'package:dichvucong/api/scan_api.dart';
+import 'package:dichvucong/methods/text_field_method.dart';
 import 'package:dichvucong/models/data_model.dart';
 import 'package:dichvucong/widget/pdf_viewer_widget.dart';
 import 'package:flutter/material.dart';
@@ -105,7 +106,8 @@ class _ScanFillPageState extends State<ScanFillPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
+                  Flexible(
+                    flex: 5,
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -114,20 +116,19 @@ class _ScanFillPageState extends State<ScanFillPage> {
                           size: 50,
                         ),
                         Container(
+                          width: MediaQuery.sizeOf(context).width * 4 / 7,
                           padding: const EdgeInsets.only(top: 2),
                           margin: const EdgeInsets.symmetric(horizontal: 5),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Container(
-                                  width: 250,
-                                  child: Text(
-                                    "Tờ khai ${widget.service}.pdf",
-                                    style: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 17,
-                                        overflow: TextOverflow.ellipsis),
-                                  )),
+                              Text(
+                                "Tờ khai ${widget.service}.pdf",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17,
+                                    overflow: TextOverflow.ellipsis),
+                              ),
                               Text(
                                 updateTime == null
                                     ? "Chưa được cập nhập"
@@ -142,11 +143,14 @@ class _ScanFillPageState extends State<ScanFillPage> {
                       ],
                     ),
                   ),
-                  InkWell(
-                    onTap: handleSaveFile,
-                    child: Icon(
-                      Icons.upload_file,
-                      color: Colors.red[900],
+                  Flexible(
+                    flex: 1,
+                    child: InkWell(
+                      onTap: handleSaveFile,
+                      child: Icon(
+                        Icons.upload_file,
+                        color: Colors.red[900],
+                      ),
                     ),
                   )
                 ],
@@ -241,19 +245,26 @@ class _ScanFillPageState extends State<ScanFillPage> {
                               size: 17,
                             ),
                           ),
-                          Text("Chỉnh sửa",
-                              style: TextStyle(
-                                shadows: [
-                                  Shadow(
-                                      color: Colors.red.shade900,
-                                      offset: const Offset(0, -3))
-                                ],
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.red[200],
-                                decorationThickness: 3,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.transparent,
-                              )),
+                          InkWell(
+                            onTap: () {
+                              info == "người đăng ký"
+                                  ? showModalRegister()
+                                  : showModalOwner();
+                            },
+                            child: Text("Chỉnh sửa",
+                                style: TextStyle(
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.red.shade900,
+                                        offset: const Offset(0, -3))
+                                  ],
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.red[200],
+                                  decorationThickness: 3,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.transparent,
+                                )),
+                          ),
                         ],
                       ),
                     ],
@@ -296,10 +307,12 @@ class _ScanFillPageState extends State<ScanFillPage> {
         return;
       }
       if (file is File) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Chờ xử lý')));
         ScanApi.uploadImage(file.path).then((model) {
           if (model == null) {
             ScaffoldMessenger.of(context)
-                .showSnackBar(const SnackBar(content: Text('hãy thử lại')));
+                .showSnackBar(const SnackBar(content: Text('Hãy thử lại')));
             return;
           }
           setState(() {
@@ -308,5 +321,90 @@ class _ScanFillPageState extends State<ScanFillPage> {
         });
       }
     });
+  }
+
+  void showModalRegister() {
+    register == null ? register = DataModel.initData() : {};
+
+    final PhoneController = TextEditingController();
+    final EmailController = TextEditingController();
+    final TamTruController = TextEditingController();
+    final HienTaiController = TextEditingController();
+    final NgheNghiepController = TextEditingController();
+    final QuanHeController = TextEditingController();
+
+    PhoneController.addListener(() => register!.phone = PhoneController.text);
+    EmailController.addListener(() => register!.email = EmailController.text);
+    TamTruController.addListener(
+        () => register!.tamtru = TamTruController.text);
+    HienTaiController.addListener(
+        () => register!.hientai = HienTaiController.text);
+    NgheNghiepController.addListener(
+        () => register!.job = NgheNghiepController.text);
+    QuanHeController.addListener(() => register!.role = QuanHeController.text);
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(children: [
+                textFieldContainer("Họ tên", register!.name),
+                textFieldContainer("Ngày tháng năm sinh", register!.dob),
+                textFieldContainer("Số định danh cá nhân", register!.id),
+                textFieldContainerWithController(
+                    key: "Số điện thoại",
+                    controller: PhoneController,
+                    value: register!.phone),
+                textFieldContainerWithController(
+                    key: "Email",
+                    controller: EmailController,
+                    value: register!.email),
+                textFieldContainer("Nơi thường trú", register!.address),
+                textFieldContainerWithController(
+                    key: "Nơi tạm trú",
+                    controller: TamTruController,
+                    value: register!.tamtru),
+                textFieldContainerWithController(
+                    key: "Nơi ở hiện tại",
+                    controller: HienTaiController,
+                    value: register!.hientai),
+                textFieldContainerWithController(
+                    key: "Nghề nghiệp",
+                    controller: NgheNghiepController,
+                    value: register!.job),
+                textFieldContainerWithController(
+                    key: "Quan hệ với chủ hộ",
+                    controller: QuanHeController,
+                    value: register!.role),
+              ]),
+            ),
+          );
+        });
+  }
+
+  void showModalOwner() {
+    owner == null ? owner = DataModel.initData() : {};
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Container(
+              height: MediaQuery.sizeOf(context).height * 1 / 2,
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(children: [
+                    textFieldContainer("Họ tên", owner!.name),
+                    textFieldContainer("Số định danh cá nhân", owner!.id),
+                  ]),
+                ),
+              ),
+            ),
+          );
+        });
   }
 }

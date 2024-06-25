@@ -66,8 +66,7 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
                         width: 150,
                         onPressed: () {
                           widget.type == "network"
-                              ? _downloadPDF(context,
-                                  "https://dowaco.vn/luutru/DonXinXacNhanTamTru.pdf")
+                              ? _downloadPDF(context, widget.link)
                               : FileApi.openFile(widget.link);
                         },
                         backgroundColor: Colors.red[900],

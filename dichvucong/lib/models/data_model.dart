@@ -1,16 +1,23 @@
+import 'package:flutter/foundation.dart';
+
 class DataModel {
-  String id;
-  String idProb;
-  String name;
-  String nameProb;
-  String dob;
-  String dobProb;
-  String nation;
-  String nationProb;
-  String address;
-  String doe;
-  String doeProb;
-  late String role;
+  String id = "";
+  String idProb = "";
+  String name = "";
+  String nameProb = "";
+  String dob = "";
+  String dobProb = "";
+  String nation = "";
+  String nationProb = "";
+  String address = "";
+  String doe = "";
+  String doeProb = "";
+  String role = "";
+  String phone = "";
+  String email = "";
+  String tamtru = "";
+  String hientai = "";
+  String job = "";
 
   DataModel({
     required this.id,
@@ -25,6 +32,21 @@ class DataModel {
     required this.doe,
     required this.doeProb,
   });
+
+  factory DataModel.initData() {
+    return DataModel(
+        id: "",
+        idProb: "",
+        name: "",
+        nameProb: "",
+        dob: "",
+        dobProb: "",
+        nation: "",
+        nationProb: "",
+        address: "",
+        doe: "",
+        doeProb: "");
+  }
 
   factory DataModel.fromJson(Map<String, dynamic> json) {
     return DataModel(

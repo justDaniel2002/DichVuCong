@@ -7,7 +7,7 @@ import 'dart:convert';
 class ScanApi {
   static Future<DataModel?> uploadImage(String path) async {
     var url = Uri.parse('https://api.fpt.ai/vision/idr/vnm');
-    var apiKey = 'cIIkAS92v2MzYEyyv5i75hK3Ii1ZfaUZ';
+    var apiKey = 'yKDqKKycqLuiSzoFoNCxR6GdO5N9lH4w';
     var file = File(path); // Replace with actual path to your image file
 
     // Create a multipart request

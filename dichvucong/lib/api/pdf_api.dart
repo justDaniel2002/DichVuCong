@@ -129,11 +129,11 @@ class PdfApi {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
               Flexible(
-                  child: Text("5. Số điện thoại liên hệ:...........…….",
+                  child: Text("5. Số điện thoại liên hệ: ${register.phone}",
                       style: TextStyle(font: ttf)),
                   flex: 1),
               Flexible(
-                  child: Text("6. Email:............",
+                  child: Text("6. Email: ${register.email}",
                       style: TextStyle(font: ttf)),
                   flex: 1)
             ])),
@@ -150,8 +150,7 @@ class PdfApi {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                  "8. Nơi tạm trú:........................................................",
+              Text("8. Nơi tạm trú: ${register.tamtru}",
                   style: TextStyle(font: ttf))
             ],
           ),
@@ -160,8 +159,7 @@ class PdfApi {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                  "9. Nơi ở hiện tại:.....................................................",
+              Text("9. Nơi ở hiện tại: ${register.hientai}",
                   style: TextStyle(font: ttf))
             ],
           ),
@@ -170,8 +168,7 @@ class PdfApi {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(
-                  "10. Nghề nghiệp,  nơi làm việc:................................",
+              Text("10. Nghề nghiệp,  nơi làm việc: ${register.job}",
                   style: TextStyle(font: ttf))
             ],
           ),
@@ -184,7 +181,7 @@ class PdfApi {
                     style: TextStyle(font: ttf)),
                 flex: 1),
             Flexible(
-                child: Text("12. Quan hệ với chủ hộ:………",
+                child: Text("12. Quan hệ với chủ hộ: ${register.role}",
                     style: TextStyle(font: ttf)),
                 flex: 1)
           ]),
