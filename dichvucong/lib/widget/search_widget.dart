@@ -1,4 +1,5 @@
 import 'package:dichvucong/models/service.dart';
+import 'package:dichvucong/widget/scan_fill_widget.dart';
 import 'package:dichvucong/widget/scanne_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -39,6 +40,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
+          height: double.maxFinite,
           color: Colors.white,
           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 40),
           child: Column(
@@ -90,8 +92,9 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Row servicesRender(Service serv, BuildContext context) {
-    return Row(
+  Column servicesRender(Service serv, BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           margin: const EdgeInsets.only(bottom: 15),
@@ -107,7 +110,7 @@ class _SearchPageState extends State<SearchPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ScanPage(
+                              builder: (context) => ScanFillPage(
                                     service: sv,
                                   )));
                     },

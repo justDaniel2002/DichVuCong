@@ -77,10 +77,10 @@ class _ScanPageState3 extends State<ScanPage3> {
                                   backgroundColor: Colors.red[900],
                                   displayText: "Xem trước tài liệu",
                                   onPressed: () async {
-                                    PdfApi pdf = new PdfApi();
-                                    final pdfFile =
-                                        await pdf.generatePDF(widget.model);
-                                    pdf.openFile(pdfFile);
+                                    // PdfApi pdf = new PdfApi();
+                                    // final pdfFile =
+                                    //     await pdf.generatePDF(widget.model);
+                                    // pdf.openFile(pdfFile);
                                     // Navigator.push(
                                     //     context,
                                     //     MaterialPageRoute(

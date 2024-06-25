@@ -1,3 +1,4 @@
+import 'package:dichvucong/api/file_api.dart';
 import 'package:dichvucong/methods/button_method.dart';
 import 'package:dichvucong/methods/navigate_before_method.dart';
 import 'package:dio/dio.dart';
@@ -6,8 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewerPage extends StatefulWidget {
-  const PdfViewerPage({super.key});
+  const PdfViewerPage({super.key, required this.link, required this.type});
 
+  final dynamic link;
+  final String type;
   @override
   State<PdfViewerPage> createState() => _PdfViewerPageState();
 }
@@ -20,8 +23,9 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
       //     'https://dowaco.vn/luutru/DonXinXacNhanTamTru.pdf')
       body: Stack(
         children: [
-          SfPdfViewer.network(
-              'https://dowaco.vn/luutru/DonXinXacNhanTamTru.pdf'),
+          widget.type == "network"
+              ? SfPdfViewer.network(widget.link)
+              : SfPdfViewer.file(widget.link),
           // Center(
           //   child: Text("Hello"),
           // ),
@@ -57,11 +61,14 @@ class _PdfViewerPageState extends State<PdfViewerPage> {
                         backgroundColor: Colors.grey[700],
                         foregroundColor: Colors.white),
                     buttonMethod(
-                        displayText: "Tải xuống",
+                        displayText:
+                            widget.type == "network" ? "Tải xuống" : "Mở File",
                         width: 150,
                         onPressed: () {
-                          _downloadPDF(context,
-                              "https://dowaco.vn/luutru/DonXinXacNhanTamTru.pdf");
+                          widget.type == "network"
+                              ? _downloadPDF(context,
+                                  "https://dowaco.vn/luutru/DonXinXacNhanTamTru.pdf")
+                              : FileApi.openFile(widget.link);
                         },
                         backgroundColor: Colors.red[900],
                         foregroundColor: Colors.white)

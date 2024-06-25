@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
-  var ttf;
+  static var ttf;
   Future openFile(File file) async {
     final url = file.path;
     try {
@@ -20,7 +20,8 @@ class PdfApi {
     }
   }
 
-  Future<File> generatePDF(DataModel model) async {
+  static Future<File> generatePDF(DataModel register, DataModel owner,
+      {name = "document.pdf"}) async {
     final pdf = Document();
     final font =
         await rootBundle.load("fonts/Montserrat-VariableFont_wght.ttf");
@@ -29,14 +30,14 @@ class PdfApi {
     pdf.addPage(MultiPage(
         build: (context) => [
               buildTitle(),
-              buildBody(model),
+              buildBody(register, owner),
               buildFooter(),
             ]));
 
-    return saveDocument(name: "document.pdf", pdf: pdf);
+    return saveDocument(name: name, pdf: pdf);
   }
 
-  String layNgayThangNamHienTai() {
+  static String layNgayThangNamHienTai() {
     var now = DateTime.now();
     var formatter = DateFormat('dd/MM/yyyy');
     String formattedDate = formatter.format(now);
@@ -49,7 +50,7 @@ class PdfApi {
     return 'ngày $ngay tháng $thang năm $nam';
   }
 
-  buildFooter() =>
+  static buildFooter() =>
       Row(mainAxisAlignment: MainAxisAlignment.spaceAround, children: [
         Flexible(
             child: Column(children: [
@@ -86,15 +87,15 @@ class PdfApi {
             flex: 1)
       ]);
 
-  buildBody(DataModel model) => Container(
-      margin: EdgeInsets.symmetric(vertical: 20),
-      padding: EdgeInsets.symmetric(horizontal: 10),
+  static buildBody(DataModel register, DataModel owner) => Container(
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(children: [
         partBody(
             child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text("1. Họ, chữ đệm và tên: ${model.name}",
+            Text("1. Họ, chữ đệm và tên: ${register.name}",
                 style: TextStyle(font: ttf))
           ],
         )),
@@ -103,7 +104,7 @@ class PdfApi {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
               Flexible(
-                  child: Text("2. Ngày, tháng, năm sinh: ${model.dob}",
+                  child: Text("2. Ngày, tháng, năm sinh: ${register.dob}",
                       style: TextStyle(font: ttf)),
                   flex: 1),
               Flexible(
@@ -120,7 +121,7 @@ class PdfApi {
                       style: TextStyle(font: ttf)),
                   flex: 1),
               Flexible(
-                  child: Text("${model.id}", style: TextStyle(font: ttf)),
+                  child: Text(register.id, style: TextStyle(font: ttf)),
                   flex: 1)
             ])),
         partBody(
@@ -140,7 +141,7 @@ class PdfApi {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text("7. Nơi thường trú: ${model.address}",
+              Text("7. Nơi thường trú: ${register.address}",
                   style: TextStyle(font: ttf))
             ],
           ),
@@ -179,7 +180,7 @@ class PdfApi {
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Flexible(
-                child: Text("11. Họ, chữ đệm và tên chủ hộ:...................",
+                child: Text("11. Họ, chữ đệm và tên chủ hộ:${owner.name}",
                     style: TextStyle(font: ttf)),
                 flex: 1),
             Flexible(
@@ -195,7 +196,8 @@ class PdfApi {
                 child: Text("13. Số định danh cá nhân/CMND của chủ hộ:",
                     style: TextStyle(font: ttf)),
                 flex: 1),
-            Flexible(child: Text(""), flex: 1)
+            Flexible(
+                child: Text(owner.id, style: TextStyle(font: ttf)), flex: 1)
           ]),
         ),
         partBody(
@@ -219,11 +221,11 @@ class PdfApi {
         ),
       ]));
 
-  Container partBody({required child}) {
+  static Container partBody({required child}) {
     return Container(margin: const EdgeInsets.only(bottom: 3), child: child);
   }
 
-  buildTitle() => Column(children: [
+  static buildTitle() => Column(children: [
         titleMethod(
             title: "CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM",
             style: TextStyle(fontWeight: FontWeight.bold, font: ttf)),
@@ -242,7 +244,7 @@ class PdfApi {
             style: TextStyle(fontWeight: FontWeight.normal, font: ttf)),
       ]);
 
-  Container titleMethod(
+  static Container titleMethod(
       {required String title, required TextStyle style, double bottom = 5}) {
     return Container(
         margin: EdgeInsets.only(bottom: bottom),
@@ -252,7 +254,7 @@ class PdfApi {
         ));
   }
 
-  Future<File> saveDocument(
+  static Future<File> saveDocument(
       {required String name, required Document pdf}) async {
     final bytes = await pdf.save();
 
