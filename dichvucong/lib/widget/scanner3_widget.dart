@@ -2,7 +2,6 @@ import 'package:dichvucong/api/pdf_api.dart';
 import 'package:dichvucong/methods/button_method.dart';
 import 'package:dichvucong/methods/text_grey_method.dart';
 import 'package:dichvucong/models/data_model.dart';
-import 'package:dichvucong/widget/pdf_viewer_widget.dart';
 import 'package:flutter/material.dart';
 
 class ScanPage3 extends StatefulWidget {
