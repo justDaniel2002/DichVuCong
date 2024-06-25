@@ -1,5 +1,7 @@
 class Service {
   String serviceName;
 
-  Service({required this.serviceName});
+  List<String> serviceList;
+
+  Service({required this.serviceName, required this.serviceList});
 }

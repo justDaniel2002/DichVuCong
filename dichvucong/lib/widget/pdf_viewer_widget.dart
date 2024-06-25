@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:dichvucong/methods/button_method.dart';
 import 'package:dichvucong/methods/navigate_before_method.dart';
 import 'package:dio/dio.dart';
 import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class PdfViewerPage extends StatefulWidget {

@@ -3,18 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../models/question.dart';
-import '../models/service.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({super.key, required this.title});
 
   final String title;
 
-  final List<Service> services = [
-    Service(serviceName: "Hành chính"),
-    Service(serviceName: "Học tập"),
-    Service(serviceName: "Sức khỏe"),
-    Service(serviceName: "Tất cả"),
+  final List<String> services = [
+    "Hành chính",
+    "Học tập",
+    "Sức khỏe",
+    "Tất cả",
   ];
 
   final List<Question> questions = [
@@ -122,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                             "assets/bannerService.png")),
                                   ),
                                   Text(
-                                    sv.serviceName,
+                                    sv,
                                     style: const TextStyle(
                                         fontWeight: FontWeight.w600),
                                   )

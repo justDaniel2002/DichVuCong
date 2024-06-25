@@ -3,13 +3,31 @@ import 'package:dichvucong/widget/scanne_widget.dart';
 import 'package:flutter/material.dart';
 
 class SearchPage extends StatefulWidget {
-  SearchPage({super.key});
+  SearchPage({super.key}) {
+    services.add(Service(
+        serviceName: "Cư trú và giấy tờ tùy thân", serviceList: service1));
+    services
+        .add(Service(serviceName: "Sức khỏe và y tế", serviceList: service2));
+    services.add(Service(serviceName: "Việc làm", serviceList: service3));
+  }
 
-  final List<Service> services = [
-    Service(serviceName: "Đăng ký tạm trú"),
-    Service(serviceName: "Đăng ký tạm vắng"),
-    Service(serviceName: "Đăng ký hộ khẩu"),
+  final List<String> service1 = [
+    "Đăng ký tạm trú",
+    "Đăng ký tạm vắng",
+    "Đăng ký hộ khẩu",
   ];
+
+  final List<String> service2 = [
+    "Chính sách Y tế",
+    "Khám chữa bệnh",
+  ];
+
+  final List<String> service3 = [
+    "Thuế thu nhập cá nhân",
+    "Chứng chỉ hành nghề",
+  ];
+
+  final List<Service> services = [];
 
   @override
   State<SearchPage> createState() => _SearchPageState();
@@ -64,56 +82,64 @@ class _SearchPageState extends State<SearchPage> {
                               right: Radius.circular(100)))),
                 ),
               ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                child: const Text(
-                  "Cư trú và giấy tờ tùy thân",
-                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Column(
-                children: widget.services
-                    .map((sv) => InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ScanPage(
-                                          service: sv.serviceName,
-                                        )));
-                          },
-                          child: Container(
-                            margin: const EdgeInsets.only(bottom: 15),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      child: const Icon(
-                                        Icons.search,
-                                        size: 20,
-                                      ),
-                                    ),
-                                    Text(
-                                      sv.serviceName,
-                                      style: const TextStyle(fontSize: 17),
-                                    )
-                                  ],
-                                ),
-                                const Icon(Icons.navigate_next)
-                              ],
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              )
+              ...widget.services.map((serv) => servicesRender(serv, context))
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Row servicesRender(Service serv, BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          margin: const EdgeInsets.only(bottom: 15),
+          child: Text(
+            serv.serviceName,
+            style: const TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+          ),
+        ),
+        Column(
+          children: serv.serviceList
+              .map((sv) => InkWell(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ScanPage(
+                                    service: sv,
+                                  )));
+                    },
+                    child: Container(
+                      margin: const EdgeInsets.only(bottom: 15),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(right: 10),
+                                child: const Icon(
+                                  Icons.search,
+                                  size: 20,
+                                ),
+                              ),
+                              Text(
+                                sv,
+                                style: const TextStyle(fontSize: 17),
+                              )
+                            ],
+                          ),
+                          const Icon(Icons.navigate_next)
+                        ],
+                      ),
+                    ),
+                  ))
+              .toList(),
+        )
+      ],
     );
   }
 }
