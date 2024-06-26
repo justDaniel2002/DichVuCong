@@ -21,7 +21,7 @@ class PdfApi {
   }
 
   static Future<File> generatePDF(DataModel register, DataModel owner,
-      {name = "document.pdf"}) async {
+      {name = "document.pdf", required List<DataModel> other}) async {
     final pdf = Document();
     final font =
         await rootBundle.load("fonts/Montserrat-VariableFont_wght.ttf");
@@ -31,6 +31,7 @@ class PdfApi {
         build: (context) => [
               buildTitle(),
               buildBody(register, owner),
+              buildTable(other),
               buildFooter(),
             ]));
 
@@ -263,4 +264,37 @@ class PdfApi {
 
     return file;
   }
+
+  static dynamic buildTable(List<DataModel> other) {
+    if (other.isEmpty) return SizedBox();
+
+    final headers = [
+      textMethod("TT"),
+      textMethod("Họ, chữ đệm và tên"),
+      textMethod("Ngày, tháng, năm sinh"),
+      textMethod("Giới tính"),
+      textMethod("Số định danh cá nhân/CMND"),
+      textMethod("Nghề nghiệp, nơi làm việc"),
+      textMethod("Quan hệ với  người có thay đổi"),
+      textMethod("Quan hệ với chủ hộ")
+    ];
+
+    final data = other
+        .map((ot) => [
+              "",
+              textMethod(ot.name),
+              textMethod(ot.dob),
+              "",
+              textMethod(ot.id),
+              textMethod(ot.job),
+              "",
+              textMethod(ot.role)
+            ])
+        .toList();
+
+    return TableHelper.fromTextArray(data: data, headers: headers);
+  }
+
+  static Text textMethod(String text) =>
+      Text(text, style: TextStyle(font: ttf));
 }

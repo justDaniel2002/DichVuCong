@@ -23,6 +23,7 @@ class _ScanFillPageState extends State<ScanFillPage> {
   DateTime? updateTime;
   DataModel? register;
   DataModel? owner;
+  List<DataModel> others = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,7 +169,11 @@ class _ScanFillPageState extends State<ScanFillPage> {
                 info: "người đăng ký",
                 paperType: "CCCD người đăng ký"),
             infoWidget(
-                model: owner, info: "chủ hộ", paperType: "CCCD người chủ hộ")
+                model: owner, info: "chủ hộ", paperType: "CCCD người chủ hộ"),
+            infoWidget2(
+                other: others,
+                info: "thành viên trong hộ",
+                paperType: "CCCD thành viên")
           ])),
     ));
   }
@@ -278,6 +283,209 @@ class _ScanFillPageState extends State<ScanFillPage> {
     );
   }
 
+  Container infoWidget2(
+      {required List<DataModel> other,
+      required String info,
+      required String paperType}) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "1. Thông tin $info",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          Text(
+                            "Loại giấy tờ: $paperType",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black45,
+                                fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () => handleScanOther(),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: const SizedBox(
+                              width: 50,
+                              child: Image(
+                                  image: AssetImage("assets/scanPng.png")),
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        other.isEmpty
+                            ? "Chưa điền thông tin"
+                            : "Hoàn tất thông tin",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: other.isEmpty
+                                ? Colors.black45
+                                : Colors.cyan[200]),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 3),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.red[900],
+                              size: 17,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showModalOther();
+                            },
+                            child: Text("Chỉnh sửa",
+                                style: TextStyle(
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.red.shade900,
+                                        offset: const Offset(0, -3))
+                                  ],
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.red[200],
+                                  decorationThickness: 3,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.transparent,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container infoWidget3({required DataModel model}) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        children: [
+          Container(
+            child: Column(
+              children: [
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "1. Thông tin ${model?.name ?? "Người mới"}",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 16),
+                          ),
+                          const Text(
+                            "Loại giấy tờ: CCCD",
+                            style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black45,
+                                fontSize: 13),
+                          ),
+                        ],
+                      ),
+                      InkWell(
+                        onTap: () => handleScanDetailOther(model),
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: const SizedBox(
+                              width: 50,
+                              child: Image(
+                                  image: AssetImage("assets/scanPng.png")),
+                            )),
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        model == null
+                            ? "Chưa điền thông tin"
+                            : "Hoàn tất thông tin",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: model == null
+                                ? Colors.black45
+                                : Colors.cyan[200]),
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.only(bottom: 3),
+                            child: Icon(
+                              Icons.edit,
+                              color: Colors.red[900],
+                              size: 17,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              showModalOtherDetail(model);
+                            },
+                            child: Text("Chỉnh sửa",
+                                style: TextStyle(
+                                  shadows: [
+                                    Shadow(
+                                        color: Colors.red.shade900,
+                                        offset: const Offset(0, -3))
+                                  ],
+                                  decoration: TextDecoration.underline,
+                                  decorationColor: Colors.red[200],
+                                  decorationThickness: 3,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.transparent,
+                                )),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
   void handleSaveFile() {
     if (register == null) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -292,7 +500,7 @@ class _ScanFillPageState extends State<ScanFillPage> {
     }
 
     PdfApi.generatePDF(register as DataModel, owner as DataModel,
-            name: "Tờ khai ${widget.service}.pdf")
+            other: others, name: "Tờ khai ${widget.service}.pdf")
         .then((file) {
       Navigator.push(
           context,
@@ -323,7 +531,54 @@ class _ScanFillPageState extends State<ScanFillPage> {
     });
   }
 
+  void handleScanOther() {
+    FileApi.pickimageFromCamera().then((file) {
+      if (file == null) {
+        return;
+      }
+      if (file is File) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Chờ xử lý')));
+        ScanApi.uploadImage(file.path).then((model) {
+          if (model == null) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('Hãy thử lại')));
+            return;
+          }
+          setState(() {
+            others.add(model);
+          });
+        });
+      }
+    });
+  }
+
+  void handleScanDetailOther(DataModel model) {
+    FileApi.pickimageFromCamera().then((file) {
+      if (file == null) {
+        return;
+      }
+      if (file is File) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Chờ xử lý')));
+        ScanApi.uploadImage(file.path).then((model) {
+          if (model == null) {
+            ScaffoldMessenger.of(context)
+                .showSnackBar(const SnackBar(content: Text('Hãy thử lại')));
+            return;
+          }
+          setState(() {
+            model = model;
+          });
+        });
+      }
+    });
+  }
+
   void showModalRegister() {
+    if (register == null) {
+      handleScan("người đăng kí");
+    }
     register == null ? register = DataModel.initData() : {};
 
     final PhoneController = TextEditingController();
@@ -386,6 +641,9 @@ class _ScanFillPageState extends State<ScanFillPage> {
   }
 
   void showModalOwner() {
+    if (owner == null) {
+      handleScan("chủ hộ");
+    }
     owner == null ? owner = DataModel.initData() : {};
     showModalBottomSheet(
         context: context,
@@ -400,6 +658,66 @@ class _ScanFillPageState extends State<ScanFillPage> {
                   child: Column(children: [
                     textFieldContainer("Họ tên", owner!.name),
                     textFieldContainer("Số định danh cá nhân", owner!.id),
+                  ]),
+                ),
+              ),
+            ),
+          );
+        });
+  }
+
+  void showModalOther() {
+    if (others.isEmpty) {
+      handleScanOther();
+      return;
+    }
+
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                    children:
+                        others.map((ot) => infoWidget3(model: ot)).toList()),
+              ),
+            ),
+          );
+        });
+  }
+
+  void showModalOtherDetail(model) {
+    final NgheNghiepController = TextEditingController();
+    final QuanHeController = TextEditingController();
+
+    NgheNghiepController.addListener(
+        () => model.job = NgheNghiepController.text);
+    QuanHeController.addListener(() => model.role = QuanHeController.text);
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Padding(
+            padding: MediaQuery.of(context).viewInsets,
+            child: Container(
+              height: MediaQuery.sizeOf(context).height * 1 / 2,
+              child: SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(children: [
+                    textFieldContainer("Họ tên", model.name),
+                    textFieldContainer("Ngày tháng năm sinh", model.dob),
+                    textFieldContainer("Số định danh cá nhân", model.id),
+                    textFieldContainerWithController(
+                        key: "Nghề nghiệp",
+                        controller: NgheNghiepController,
+                        value: model.job),
+                    textFieldContainerWithController(
+                        key: "Quan hệ với chủ hộ",
+                        controller: QuanHeController,
+                        value: model.role),
                   ]),
                 ),
               ),
