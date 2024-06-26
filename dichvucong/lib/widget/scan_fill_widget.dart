@@ -578,8 +578,8 @@ class _ScanFillPageState extends State<ScanFillPage> {
   void showModalRegister() {
     if (register == null) {
       handleScan("người đăng kí");
+      return;
     }
-    register == null ? register = DataModel.initData() : {};
 
     final PhoneController = TextEditingController();
     final EmailController = TextEditingController();
@@ -643,8 +643,8 @@ class _ScanFillPageState extends State<ScanFillPage> {
   void showModalOwner() {
     if (owner == null) {
       handleScan("chủ hộ");
+      return;
     }
-    owner == null ? owner = DataModel.initData() : {};
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
